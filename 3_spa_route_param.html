@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
+<div id="app" class="container">
+  <router-view></router-view>
+</div>
+
+<template id="tplNewsList">
+  <div>
+    <ul>
+      <li v-for="n in nlist" :key="n.nid">
+        <router-link :to="'/detail/'+n.nid">{{n.title}}</router-link>
+      </li>
+    </ul>
+  </div>
+</template>
+<template id="tplNewsDetail">
+  <div>
+    新闻标号为：{{$route.params.newsId}}
+  </div>
+</template>
+<script src="js/vue.js"></script>
+<script src="js/vue-router.js"></script>
+<script>
+
+  var NewsList = {
+    template: '#tplNewsList',
+    data(){
+      return {
+        nlist: [
+          {nid: 101, title:'新闻标题1'},
+          {nid: 102, title:'新闻标题2'},
+          {nid: 103, title:'新闻标题3'},
+          {nid: 104, title:'新闻标题4'},
+        ]
+      }
+    }
+  }
+
+  var NewsDetail = {
+    template: '#tplNewsDetail'
+  }
+
+  var routes = [
+    {path: '/list', component: NewsList},
+    {path: '/detail/:newsId', component: NewsDetail},
+  ]
+  var router = new VueRouter({routes})
+
+  var vm = new Vue({
+    el: '#app',
+    data: {},
+    router
+  });
+</script>
+</body>
+</html>

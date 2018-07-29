@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
+<div id="app" class="container">
+  <h3>欢迎访问学子商城后台管理系统</h3>
+  <hr>
+  <!--SPA应用中用于插入“模板页面”的缺口-->
+  <router-view></router-view>
+</div>
+<template id="tplLogin">
+  <div class="alert alert-success">
+    <h3>管理员登录</h3>
+    <a href="#/main">登录1</a>
+    <router-link to="/main">登录2</router-link>
+    <button @click="handleClick">登录3</button>
+  </div>
+</template>
+
+<template id="tplMain">
+  <div class="alert alert-info">
+    <h3>学子商城后台主界面</h3>
+    <!--<a href="#">退出登录</a>-->
+    <router-link to="/login">退出登录</router-link>
+    <button @click="$router.push('/login')">退出登录</button>
+    <hr>
+    <h4>商品列表</h4>
+    <ul>
+      <li><router-link to="/pdetail/101">戴尔燃7000</router-link></li>
+      <li><router-link to="/pdetail/302">联想小新</router-link></li>
+      <li><router-link to="/pdetail/203">小米AirBook</router-link></li>
+    </ul>
+  </div>
+</template>
+
+<template id="tplProductDetail">
+  <div class="alert alert-danger">
+    <h3>产品详情</h3>
+    <hr>
+    <p>产品编号：{{$route.params.pid}}</p>
+  </div>
+</template>
+<script src="js/vue.js"></script>
+<script src="js/vue-router.js"></script>
+<script>
+  //SPA应用中的顶层组件
+  var Login = {
+    template: '#tplLogin',
+    components: {
+      //顶层组件中的子组件
+    },
+    methods: {
+      handleClick(){
+        //router.push('/main')
+        this.$router.push('/main');
+      }
+    }
+  }
+  //SPA应用中的顶层组件
+  var Main = {
+    template: '#tplMain',
+    components: {
+      //顶层组件中的子组件
+    }
+  }
+  //SPA应用中的顶层组件
+  var ProductDetail = {
+    template: '#tplProductDetail',
+    components: {
+      //顶层组件中的子组件
+    },
+    mounted(){
+      //组件在DOM树上加载完成，开始读取要查询的产品编号
+      console.log('用户想查询的产品的编号：');
+      console.log(this.$route.params.pid);
+      //TODO: 根据产品编号异步查询产品详情....
+    }
+  }
+
+  //路由词典
+  var routes = [
+    {path: '/', component: Login},  //默认首屏页
+    {path: '/login', component: Login},
+    {path: '/main', component: Main},
+    {path: '/pdetail/:pid', component: ProductDetail},
+  ]
+  //路由器封装路由词典
+  var router = new VueRouter({ routes })
+
+  //SPA应用中的根组件
+  new Vue({
+    router
+  }).$mount('#app');   //等同于 el: '#app'
+
+</script>
+</body>
+</html>
