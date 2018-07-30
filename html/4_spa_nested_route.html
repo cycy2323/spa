@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<body>
+<div id="app" class="container">
+  <h3>欢迎访问学子商城后台管理系统</h3>
+  <hr>
+  <!--SPA应用中用于插入“模板页面”的缺口-->
+  <router-view></router-view>
+</div>
+<template id="tplLogin">
+  <div class="alert alert-success">
+    <h3>管理员登录</h3>
+    <a href="#/main">登录1</a>
+    <router-link to="/main">登录2</router-link>
+    <button @click="$router.push('/main')">登录3</button>
+  </div>
+</template>
+
+<template id="tplMain">
+  <div class="alert alert-info">
+    <h3>学子商城后台主界面</h3>
+    <!--<a href="#">退出登录</a>-->
+    <router-link to="/login">退出登录</router-link>
+    <button @click="$router.push('/login')">退出登录</button>
+    <hr>
+    <router-link to="/main/productlist">商品列表</router-link>
+    <router-link to="/main/productadd">添加商品</router-link>
+    <router-link to="/main/userlist">用户列表</router-link>
+    <router-link to="/main/usersearch">用户搜索</router-link>
+    <!--用于盛放嵌套路由组件的router-view-->
+    <router-view></router-view>
+  </div>
+</template>
+<script src="js/vue.js"></script>
+<script src="js/vue-router.js"></script>
+<script>
+  //SPA应用中的顶层组件
+  var Login = {
+    template: '#tplLogin'
+  }
+  //SPA应用中的顶层组件
+  var Main = {
+    template: '#tplMain'
+  }
+  var ProductList = {
+    template: '<div class="alert alert-danger">这里是商品列表...</div>'
+  }
+  var ProductAdd = {
+    template: '<div class="alert alert-success">这里是商品添加...</div>'
+  }
+  var UserList = {
+    template: '<div class="alert alert-warning">这里是用户列表...</div>'
+  }
+  var UserSearch = {
+    template: '<div class="alert alert-danger">这里是用户搜索...</div>'
+  }
+
+  //路由词典
+  var routes = [
+    {path: '/', component: Login},  //默认首屏页
+    {path: '/login', component: Login},
+    {path: '/main', component: Main, children: [
+      /*{path: '/productlist', component: ProductList},
+      {path: '/productadd', component: ProductAdd},
+      {path: '/userlist', component: UserList},
+      {path: '/usersearch', component: UserSearch},*/
+      {path: '', component: ProductList}, //父路由组件中的默认子路由组件
+      {path: 'productlist', component: ProductList},
+      {path: 'productadd', component: ProductAdd},
+      {path: 'userlist', component: UserList},
+      {path: 'usersearch', component: UserSearch},
+    ]},
+  ]
+  //路由器封装路由词典
+  var router = new VueRouter({ routes })
+
+  //SPA应用中的根组件
+  new Vue({
+    router
+  }).$mount('#app');   //等同于 el: '#app'
+
+</script>
+</body>
+</html>
